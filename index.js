@@ -2,12 +2,14 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
 
 
 const port = 3000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+const saltRounds = 10;
 dotenv.config();
 
 mongoose.connect(process.env.MONGODB_URL)
@@ -72,9 +74,10 @@ app.post("/signup", async (req, res) => {
         //     return res.render("signup.ejs", { passError: "Passwords do not match" });
         // }
         // If email doesn't exist and passwords match, proceed to save the user
+        const hash = await bcrypt.hash(password, saltRounds);
         const newUser = new User({
             email: email,
-            password: password
+            password: hash
         });
         await newUser.save()
             .then(() => {

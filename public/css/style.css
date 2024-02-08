@@ -16,10 +16,75 @@
     width: 100%;
     /* Ensure the box takes full width */
     padding: 20px;
-    border: 1px solid #ccc;
+    /* border: 1px solid #F263A6; */
     border-radius: 10px;
+    background-color: #010409;
+    color: white;
+    position: relative;
+    box-shadow: 0 0px 10px 0px RGBA(255, 255, 255, 0.05);
+    /* Ensure the box-shadow is positioned relative to the box */
+}
+
+.signup-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+
+    /* Adjust the width of the corner shadow */
+    height: 40%;
+    /* Adjust the height of the corner shadow */
+    /* background: #F263A6; */
+    /* Shadow color */
+    box-shadow: 0 0 20px #F20519;
+    /* box-shadow: linear-gradient(#ff0000, #38084a); */
+    /* background-image: linear-gradient(45deg, #ff0000, #38084a); */
+    /* Adjust the box-shadow to control the shadow's blur and spread */
+    border-radius: 10px;
+    /* Adjust the border-radius to match the box's border-radius */
+    z-index: -1;
+}
+
+.signup-box::after {
+    content: "";
+    position: absolute;
+    top: 60%;
+    right: 60%;
+    width: 40%;
+    /* Adjust the width of the corner shadow */
+    height: 40%;
+    /* Adjust the height of the corner shadow */
+    /* background: #F263A6; */
+    /* Shadow color */
+    box-shadow: 0 0 20px #01fe1f;
+    /* Adjust the box-shadow to control the shadow's blur and spread */
+    border-radius: 10px;
+    /* Adjust the border-radius to match the box's border-radius */
+    z-index: -1;
+}
+
+
+.form-control:focus {
+    border: 1px solid #00ff22;
+    box-shadow: 0 0px 10px 0px #00ff22;
+}
+
+
+
+.signup-box h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.signup-box label {
+    color: white;
+
+}
+
+.signup-box hr {
     background-color: white;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .google-logo {
