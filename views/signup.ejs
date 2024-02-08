@@ -12,34 +12,38 @@
             crossorigin="anonymous"></script>
         <link rel="stylesheet" href="./css/style.css">
         <style>
-            body{
-                background-color: #FEFBF6;
-            }
-        </style>
+        body {
+            background-color: #FEFBF6;
+        }
+    </style>
     </head>
     <body>
         <div class="center-container">
             <div class="signup-box">
                 <h2 class="text-center mb-4">Sign Up and start Using</h2>
-                <form>
+                <form action="/signup" method="POST">
                     <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email"
                             aria-describedby="emailHelp"
-                            placeholder="Enter Email" name="email">
+                            placeholder="Enter Email" name="email" required>
+                        <small class="text-danger"><%= locals.emailError
+                            %></small>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control"
                             id="password" placeholder="Password"
-                            name="password">
+                            name="password" required>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>
                         <input type="password" class="form-control"
                             id="confirmPassword" placeholder="Confirm Password"
-                            name="confirmpassword">
-                    </div>
+                            name="confirmpassword" required>
+                        <small class="text-danger"><%#
+                            locals.passError %></small>
+                    </div> -->
                     <button type="submit"
                         class="btn btn-primary btn-block mb-3">Sign Up</button>
                 </form>
