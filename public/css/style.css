@@ -1,0 +1,71 @@
+.header-dp {
+    border-radius: 50%;
+}
+
+/* Sign Up Form  */
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.signup-box {
+    max-width: 400px;
+    /* Increase the max-width value as needed */
+    width: 100%;
+    /* Ensure the box takes full width */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+
+.google-logo {
+    padding: 5px;
+}
+
+.fb-logo {
+    padding: 5px;
+}
+
+.google-btn-outline {
+    border: 1px solid #DB4437;
+    color: white;
+    background-color: #DB4437;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+.google-btn-outline:hover {
+    border: 1px solid black;
+    color: #DB4437;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+.facebook-btn-outline {
+    border: 1px solid #4267B2;
+    color: white;
+    background-color: #4267B2;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+}
+
+.facebook-btn-outline:hover {
+    border: 1px solid black;
+    color: #4267B2;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 5px;
+}
