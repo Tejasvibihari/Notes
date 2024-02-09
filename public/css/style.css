@@ -135,3 +135,82 @@
     padding: 5px 10px;
     margin: 5px;
 }
+
+.profile-box {
+    /* max-width: 100%; */
+    /* Increase the max-width value as needed */
+    width: 100%;
+    /* Ensure the box takes full width */
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    /* background-color: #010409; */
+    color: white;
+    /* position: relative; */
+    box-shadow: 0 0px 10px 0px RGBA(255, 255, 255, 0.05);
+}
+
+.profile-dp-section {
+    border: 1px solid #F263A6;
+    padding: 10px;
+}
+
+.profile-dp {
+    border-radius: 50%;
+    width: 250px;
+    height: 250px;
+    box-shadow: 0 0px 10px 0px #030303;
+}
+
+.name {
+    color: black;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.profile-form-section {
+    /* border: 1px solid #F263A6; */
+    /* padding: 20px; */
+}
+
+.profile-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    text-align: center;
+}
+
+.profile-form {
+    margin-bottom: 20px;
+}
+
+.profile-form input {
+    margin-bottom: 10px;
+}
+
+.profile-form input[type="email"] {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+.profile-actions {
+    margin-top: 20px;
+}
+
+/* Hover effect */
+.profile-image:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.card {
+    border: 1px solid #F263A6;
+    height: 340px;
+
+}
+
+.delete-icon {
+}
