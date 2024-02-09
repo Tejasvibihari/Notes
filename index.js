@@ -78,7 +78,13 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 })
-
+app.get("/profile", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("profile.ejs");
+    } else {
+        res.redirect("/login");
+    }
+})
 
 // Post Route
 
