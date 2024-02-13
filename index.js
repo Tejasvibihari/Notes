@@ -120,6 +120,13 @@ app.get("/login", (req, res) => {
 //         return res.status(400).send("Invalid mensId parameter");
 //     }
 // })
+app.get("/add", (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render("addnote.ejs", { user: req.user });
+    } else {
+        res.redirect("/login");
+    }
+})
 
 app.get("/profile", (req, res) => {
     // console.log(`Hello Check ${req.user.firstname}`);
