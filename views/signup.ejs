@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,24 +18,38 @@
         }
     </style>
     </head>
+
     <body>
         <div class="center-container">
             <div class="signup-box">
                 <h2 class="text-center mb-4">Sign-Up and start Using</h2>
                 <form action="/signup" method="POST">
                     <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" class="form-control" id="firstName"
+                            placeholder="Enter First Name" name="firstname"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" class="form-control" id="lastName"
+                            placeholder="Enter Last Name" name="lastname"
+                            required>
+                    </div>
+                    <div class="form-group">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email"
                             aria-describedby="emailHelp"
-                            placeholder="Enter Email" name="email" required>
+                            placeholder="Enter Email" value="Email" name="email"
+                            required>
                         <small class="text-danger"><%= locals.emailError
                             %></small>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" class="form-control"
-                            id="password" placeholder="Password"
-                            name="password" required>
+                            id="password" placeholder="Password" name="password"
+                            required>
                     </div>
                     <!-- <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>
@@ -69,4 +84,5 @@
         <script
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
+
 </html>

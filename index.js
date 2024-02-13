@@ -6,14 +6,36 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
+import multer from "multer";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const port = 3000;
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
+app.use(express.static("uploads"));
 const saltRounds = 10;
 dotenv.config();
+
+// Image Upload 
+// Configure Multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "./uploads");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({
+    storage,
+});
+
 
 app.set("view engine", "ejs");
 app.use(session({
@@ -34,6 +56,14 @@ mongoose.connect(process.env.MONGODB_URL)
 
 //User Model Schema 
 const usersSchema = new mongoose.Schema({
+    firstname: {
+        type: String,
+        required: true,
+    },
+    lastname: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         required: true,
@@ -41,23 +71,27 @@ const usersSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
+    },
+    imagePath: {
+        type: String,
     }
 });
 const User = mongoose.model('User', usersSchema);
 
 const userDetailSchema = new mongoose.Schema({
-    name: {
+    firstname: {
         type: String,
-        required: true
+
     },
-    image: {
+    lastname: {
         type: String,
-        required: true
+
     },
     email: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Email',
-        required: true
+        type: String,
+    },
+    imagePath: {
+        type: String,
     }
 });
 const UserDetail = mongoose.model('UserDetail', userDetailSchema);
@@ -65,9 +99,10 @@ const UserDetail = mongoose.model('UserDetail', userDetailSchema);
 // Get Route 
 
 app.get("/", (req, res) => {
+    const userDetail = UserDetail.find()
     console.log(req.user);
     if (req.isAuthenticated()) {
-        res.render("home.ejs");
+        res.render("home.ejs", { user: req.user });
     } else {
         res.redirect("/login");
     }
@@ -78,19 +113,70 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 })
+// app.get("/profile/:profileId", (req, res) => {
+//     const requestedprofileId = req.params.profileId;
+
+//     if (!mongoose.Types.ObjectId.isValid(requestedMensId)) {
+//         return res.status(400).send("Invalid mensId parameter");
+//     }
+// })
+
 app.get("/profile", (req, res) => {
+    // console.log(`Hello Check ${req.user.firstname}`);
     if (req.isAuthenticated()) {
-        res.render("profile.ejs");
+        res.render("profile.ejs", { user: req.user });
     } else {
         res.redirect("/login");
     }
 })
 
 // Post Route
+// app.post("/profile", upload.single("profileImage"), async (req, res) => {
+//     const firstname = req.body.firstname;
+//     const lastname = req.body.lastname;
+//     const email = req.body.email;
+//     const file = req.file.filename; // Moved inside the route handler
+//     console.log(firstname, lastname); console.log(file)
+//     try {
+//         const editUserDetail = new User({
+//             firstname: firstname,
+//             lastname: lastname,
+//             email: email,
+//             imagePath: file
+//         });
+//         await editUserDetail.save();
+//         console.log("User Detail Updated");
+//         res.redirect("/profile");
+//     } catch (error) {
+//         console.log(error);
+//         res.send("Internal Server Error");
+//     }
+// });
+app.post("/profile", upload.single("profileImage"), async (req, res) => {
+    const { firstname, lastname } = req.body;
+    const email = req.user.email; // Assuming the user is authenticated and their email is available in req.user
+    const file = req.file ? req.file.filename : req.user.imagePath;
+
+    try {
+        // Update user details in the userDetail collection
+        await User.findOneAndUpdate({ email: email }, { firstname: firstname, lastname: lastname, imagePath: file });
+        req.user.firstname = firstname;
+        req.user.lastname = lastname;
+        req.user.imagePath = file;
+        // Redirect to profile page or any other desired page
+        res.redirect("/profile");
+    } catch (error) {
+        console.log(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
 
 app.post("/signup", async (req, res) => {
-    const email = req.body.username;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const email = req.body.email;
     const password = req.body.password;
+
     // const confirmPassword = req.body.confirmPassword;
     try {
         const findEmail = await User.findOne({ email: email });
@@ -104,7 +190,9 @@ app.post("/signup", async (req, res) => {
         const hash = await bcrypt.hash(password, saltRounds);
         const newUser = new User({
             email: email,
-            password: hash
+            password: hash,
+            firstname: firstname,
+            lastname: lastname
         });
         await newUser.save()
             .then(() => {
@@ -127,9 +215,9 @@ app.post("/login", passport.authenticate("local", {
 }));
 
 
-passport.use(new Strategy(async function verify(username, password, cb) {
+passport.use(new Strategy(async function verify(email, password, cb) {
     try {
-        const user = await User.findOne({ email: username });
+        const user = await User.findOne({ email: email });
         if (user === null) {
             return cb("User Not Found")
         } else {
@@ -149,6 +237,32 @@ passport.use(new Strategy(async function verify(username, password, cb) {
         res.send("Internal Server Error")
     }
 }))
+// app.delete("/delete", async (req, res) => {
+//     const userId = req.user.id;
+
+//     try {
+//         // Find the user by ID and delete it from the database
+//         await User.findByIdAndDelete(userId);
+//         res.status(200).send("User deleted successfully");
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).send("Internal Server Error");
+//     }
+// });
+
+
+// logout route 
+app.get("/logout", (req, res) => {
+    // Clear the session data
+    req.session.destroy((err) => {
+        if (err) {
+            console.log("Error destroying session:", err);
+            return res.status(500).send("Internal Server Error");
+        }
+        // Redirect the user to the login page
+        res.redirect("/login");
+    });
+});
 
 
 passport.serializeUser((user, cb) => {
