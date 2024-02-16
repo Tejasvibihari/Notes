@@ -9,61 +9,28 @@
 
 <div class="container notes ">
     <div class="row">
-        <div class="col-lg-4">
-            <div class="outer-container">
-                <div class="box">
-                    <div class="note-pin">
-                        <img class="pin-img" src="./img/pin.webp" alt>
+        <div class="row">
+            <% userNotes.forEach(function(note) { %>
+            <div class="col-lg-4">
+                <a href="/update/<%= note._id %>">
+                    <div class="outer-container">
+                        <div class="<%= randomNotesColor %> box rounded-corner">
+                            <div class="note-pin">
+                                <img class="pin-img" src="./img/pin.webp" alt>
+                            </div>
+                            <div class="notes-content">
+                                <h2><%= note.title %></h2>
+                                <div class="line"></div>
+                                <p><%= note.content.substr(0, 220) +
+                                    '.....'%></p>
+                            </div>
+                        </div>
+                        <div
+                            class="<%= randomNotesColor %> rotated-box rounded-corner"></div>
                     </div>
-                    <div class="notes-content">
-                        <h2>Heading</h2>
-                        <div class="line"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                            Sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</p>
-
-                    </div>
-                </div>
-                <div class="rotated-box"></div>
+                </a>
             </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="outer-container">
-                <div class="box">
-                    <div class="note-pin">
-                        <img class="pin-img" src="./img/pin.webp" alt>
-                    </div>
-                    <div class="notes-content">
-                        <h2>Heading</h2>
-                        <div class="line"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                            Sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</p>
-
-                    </div>
-                </div>
-                <div class="rotated-box"></div>
-            </div>
-        </div> <div class="col-lg-4">
-            <div class="outer-container">
-                <div class="box">
-                    <div class="note-pin">
-                        <img class="pin-img" src="./img/pin.webp" alt>
-                    </div>
-                    <div class="notes-content">
-                        <h2>Heading</h2>
-                        <div class="line"></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit.
-                            Sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.</p>
-
-                    </div>
-                </div>
-                <div class="rotated-box"></div>
-            </div>
+            <% }) %>
         </div>
     </div>
 </div>

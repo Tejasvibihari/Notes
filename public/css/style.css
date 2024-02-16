@@ -246,23 +246,42 @@
     width: 300px;
     height: 300px;
     position: absolute;
-    background: radial-gradient(circle, #FFF8D0, #EAC542);
     box-shadow: 0px 7px 7px 5px rgba(0, 0, 0, 0.2);
     padding: 20px;
     text-align: center;
-    border: 2px solid #EAC542;
 }
 
 /* Styling for the second square box (rotated) */
 .rotated-box {
     width: 270px;
     height: 270px;
-    background: radial-gradient(circle, #FFF8D0, #EAC542);
-    border: 2px solid #EAC542;
     transform: rotate(30deg);
     position: absolute;
     z-index: -1;
 }
+
+.color1 {
+    background: radial-gradient(circle, #FFF8D0, #EAC542);
+    border: 2px solid #EAC542;
+}
+
+.color2 {
+    background: radial-gradient(circle, #B4F5BD, #66BC73);
+    border: 2px solid #66BC73;
+}
+
+.color3 {
+
+    background: radial-gradient(circle, #DBA9FE, #C077FC);
+    border: 2px solid #C077FC;
+}
+
+.color4 {
+    background: radial-gradient(circle, #FFAAD3, #DF5392);
+    border: 2px solid #DF5392;
+}
+
+
 
 /* Styling for the heading and paragraph inside the first box */
 h2,
@@ -279,12 +298,10 @@ p {
     margin: 10px auto;
 }
 
-.gradient-bg {
-    /* Radial gradient starting from center, transitioning from red to blue */
-    background: radial-gradient(circle, red, blue);
-    /* Set width and height for demonstration */
-    width: 100%;
-    height: 300px;
+.rounded-corner {
+    border-top-left-radius: 250px 15px;
+    border-bottom-left-radius: 20px 115px;
+    border-bottom-right-radius: 105px 15px;
 }
 
 .note-pin {
@@ -306,4 +323,91 @@ p {
 
 .note-icon {
     margin: 7px;
+}
+
+
+/* Add notes  */
+@import url(https://fonts.googleapis.com/css?family=Roboto);
+@import url(https://fonts.googleapis.com/css?family=Handlee);
+
+/* 
+body {
+    margin: 40px 0 0;
+    background: #91D1D3;
+    font-family: 'Roboto', sans-serif;
+} */
+.note-title {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    line-height: 30px;
+    padding: 0 10px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: rgb(0, 9, 6);
+    font-family: 'Handlee', cursive;
+    font-weight: bold;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.paper {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    min-width: 400px;
+    height: 480px;
+    margin: 0 auto;
+    background: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+    overflow: hidden;
+}
+
+.paper:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    background: radial-gradient(#575450 6px, transparent 7px) repeat-y;
+    background-size: 30px 30px;
+    border-right: 3px solid #D44147;
+    box-sizing: border-box;
+}
+
+.paper-content {
+    position: absolute;
+    top: 30px;
+    right: 0;
+    bottom: 30px;
+    left: 60px;
+    background: linear-gradient(transparent, transparent 28px, #91D1D3 28px);
+    background-size: 30px 30px;
+}
+
+.paper-content textarea {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    max-height: 100%;
+    line-height: 30px;
+    padding: 0 10px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: mediumblue;
+    font-family: 'Handlee', cursive;
+    font-weight: bold;
+    font-size: 18px;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+.submit_note {
+    border-radius: 50px;
 }

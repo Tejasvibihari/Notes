@@ -20,6 +20,8 @@ app.use(express.static("public"));
 app.use(express.static("uploads"));
 const saltRounds = 10;
 dotenv.config();
+const note_color = ['color1', 'color2', 'color3', 'color4'];
+
 
 // Image Upload 
 // Configure Multer
@@ -77,32 +79,20 @@ const usersSchema = new mongoose.Schema({
     }
 });
 const User = mongoose.model('User', usersSchema);
-
-const userDetailSchema = new mongoose.Schema({
-    firstname: {
-        type: String,
-
-    },
-    lastname: {
-        type: String,
-
-    },
-    email: {
-        type: String,
-    },
-    imagePath: {
-        type: String,
-    }
+const noteSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    content: { type: String, required: true }
 });
-const UserDetail = mongoose.model('UserDetail', userDetailSchema);
+const Note = mongoose.model('Note', noteSchema);
 
 // Get Route 
 
-app.get("/", (req, res) => {
-    const userDetail = UserDetail.find()
-    console.log(req.user);
+app.get("/", async (req, res) => {
+    const randomNotesColor = note_color[Math.floor(Math.random() * note_color.length)];
     if (req.isAuthenticated()) {
-        res.render("home.ejs", { user: req.user });
+        const userNotes = await Note.find({ userId: req.user._id });
+        res.render("home.ejs", { user: req.user, randomNotesColor, userNotes });
     } else {
         res.redirect("/login");
     }
@@ -113,6 +103,22 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
     res.render("login.ejs");
 })
+app.get("/update/:noteId", async (req, res) => {
+    if (req.isAuthenticated()) {
+        const noteId = req.params.noteId;
+        try {
+            const updateNote = await Note.findById(noteId);
+            console.log("Note Updated");
+            res.render("update.ejs", { user: req.user, updateNote });
+        } catch (err) {
+            console.log(err);
+            res.status(500).send("Internal Server Error");
+        }
+    } else {
+        res.redirect("/login");
+    }
+});
+
 // app.get("/profile/:profileId", (req, res) => {
 //     const requestedprofileId = req.params.profileId;
 
@@ -122,6 +128,7 @@ app.get("/login", (req, res) => {
 // })
 app.get("/add", (req, res) => {
     if (req.isAuthenticated()) {
+
         res.render("addnote.ejs", { user: req.user });
     } else {
         res.redirect("/login");
@@ -131,6 +138,7 @@ app.get("/add", (req, res) => {
 app.get("/profile", (req, res) => {
     // console.log(`Hello Check ${req.user.firstname}`);
     if (req.isAuthenticated()) {
+
         res.render("profile.ejs", { user: req.user });
     } else {
         res.redirect("/login");
@@ -159,6 +167,46 @@ app.get("/profile", (req, res) => {
 //         res.send("Internal Server Error");
 //     }
 // });
+app.post("/update", async (req, res) => {
+    const noteId = req.body._id;
+    const title = req.body.title;
+    const content = req.body.content;
+    try {
+        await Note.findByIdAndUpdate(noteId, { title: title, content: content });
+        return res.redirect("/");
+    } catch (err) {
+        console.log(err);
+        res.status(500).send("Internal Server Error");
+    }
+});
+app.post("/delete", async (req, res) => {
+    let id = req.body._id;
+    try {
+        await Note.deleteOne({ _id: id });
+        res.redirect("/");
+    } catch (e) {
+        console.log(e);
+        res.status(400).send("Error deleting note.");
+    }
+});
+app.post("/add", async (req, res) => {
+    const title = req.body.title;
+    const content = req.body.content;
+    const userId = req.user._id;
+    try {
+        const newNote = new Note({
+            title: title,
+            content: content,
+            userId: userId
+        });
+        await newNote.save();
+        res.redirect("/");
+    } catch (error) {
+        console.log(error);
+        res.send("Internal Server Error");
+    }
+})
+
 app.post("/profile", upload.single("profileImage"), async (req, res) => {
     const { firstname, lastname } = req.body;
     const email = req.user.email; // Assuming the user is authenticated and their email is available in req.user
